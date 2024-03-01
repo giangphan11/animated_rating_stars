@@ -98,37 +98,38 @@ class _AnimatedRatingStarsState extends State<AnimatedRatingStars> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(widget.maxRating.toInt(), (index) {
-        return GestureDetector(
-          onTap: () {
-            if (!widget.readOnly) {
-              double selectedRating = index.toDouble() + 1.0;
-              if (_rating == selectedRating && widget.interactiveTooltips) {
-                _rating -= 0.5; // Toggle half-star state
-              } else {
-                _rating = selectedRating;
-              }
-              widget.onChanged(_rating);
-              setState(() {}); // Rebuild widget to reflect changes
+    return Wrap(
+    spacing: 12.0, // gap between adjacent chips
+    runSpacing: 0.0, // gap between lines
+    children: List.generate(widget.maxRating.toInt(), (index) {
+      return GestureDetector(
+        onTap: () {
+          if (!widget.readOnly) {
+            double selectedRating = index.toDouble() + 1.0;
+            if (_rating == selectedRating && widget.interactiveTooltips) {
+              _rating -= 0.5; // Toggle half-star state
+            } else {
+              _rating = selectedRating;
             }
-          },
-          child: AnimatedStar(
-            filled: _rating >= index + 1,
-            halfFilled: widget.interactiveTooltips && _rating == index + 0.5,
-            filledColor: widget.filledColor,
-            emptyColor: widget.emptyColor,
-            filledIcon: widget.customFilledIcon,
-            halfFilledIcon: widget.customHalfFilledIcon,
-            emptyIcon: widget.customEmptyIcon,
-            starSize: widget.starSize,
-            animationDuration: widget.animationDuration,
-            animationCurve: widget.animationCurve,
-          ),
-        );
-      }),
-    );
+            widget.onChanged(_rating);
+            setState(() {}); // Rebuild widget to reflect changes
+          }
+        },
+        child: AnimatedStar(
+          filled: _rating >= index + 1,
+          halfFilled: widget.interactiveTooltips && _rating == index + 0.5,
+          filledColor: widget.filledColor,
+          emptyColor: widget.emptyColor,
+          filledIcon: widget.customFilledIcon,
+          halfFilledIcon: widget.customHalfFilledIcon,
+          emptyIcon: widget.customEmptyIcon,
+          starSize: widget.starSize,
+          animationDuration: widget.animationDuration,
+          animationCurve: widget.animationCurve,
+        ),
+      );
+    }),
+  );
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:animated_rating_stars/animated_rating_stars.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -47,9 +48,9 @@ class _MyAppState extends State<MyApp> {
                   },
                   displayRatingValue: true, // Display the rating value
                   interactiveTooltips: true, // Allow toggling half-star state
-                  customFilledIcon: Icons.star,
+                  customFilledIcon: CupertinoIcons.star_fill,
                   customHalfFilledIcon: Icons.star_half,
-                  customEmptyIcon: Icons.star_border,
+                  customEmptyIcon: CupertinoIcons.star,
                   starSize: 40.0,
                   animationDuration: const Duration(milliseconds: 500),
                   animationCurve: Curves.easeInOut,
