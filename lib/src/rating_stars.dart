@@ -60,13 +60,16 @@ class AnimatedRatingStars extends StatefulWidget {
   /// Determines whether the widget is read-only.
   final bool readOnly;
 
+  /// The space between each star.
+  final double spaceSize;
+
   /// Creates an [AnimatedRatingStars] widget.
   const AnimatedRatingStars({
     super.key,
     this.initialRating = 0.0,
     this.minRating = 0.0,
     this.maxRating = 5.0,
-    this.filledColor = Colors.red,
+    this.filledColor = Colors.amber,
     this.emptyColor = Colors.grey,
     this.filledIcon = Icons.star,
     this.halfFilledIcon = Icons.star_half,
@@ -81,6 +84,7 @@ class AnimatedRatingStars extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 300),
     this.animationCurve = Curves.easeInOut,
     this.readOnly = false,
+    this.spaceSize = 12.0,
   });
 
   @override
@@ -99,37 +103,37 @@ class _AnimatedRatingStarsState extends State<AnimatedRatingStars> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-    spacing: 12.0, // gap between adjacent chips
-    runSpacing: 0.0, // gap between lines
-    children: List.generate(widget.maxRating.toInt(), (index) {
-      return GestureDetector(
-        onTap: () {
-          if (!widget.readOnly) {
-            double selectedRating = index.toDouble() + 1.0;
-            if (_rating == selectedRating && widget.interactiveTooltips) {
-              _rating -= 0.5; // Toggle half-star state
-            } else {
-              _rating = selectedRating;
+      spacing: widget.spaceSize, // gap between adjacent chips
+      runSpacing: 0.0, // gap between lines
+      children: List.generate(widget.maxRating.toInt(), (index) {
+        return GestureDetector(
+          onTap: () {
+            if (!widget.readOnly) {
+              double selectedRating = index.toDouble() + 1.0;
+              if (_rating == selectedRating && widget.interactiveTooltips) {
+                _rating -= 0.5; // Toggle half-star state
+              } else {
+                _rating = selectedRating;
+              }
+              widget.onChanged(_rating);
+              setState(() {}); // Rebuild widget to reflect changes
             }
-            widget.onChanged(_rating);
-            setState(() {}); // Rebuild widget to reflect changes
-          }
-        },
-        child: AnimatedStar(
-          filled: _rating >= index + 1,
-          halfFilled: widget.interactiveTooltips && _rating == index + 0.5,
-          filledColor: widget.filledColor,
-          emptyColor: widget.emptyColor,
-          filledIcon: widget.customFilledIcon,
-          halfFilledIcon: widget.customHalfFilledIcon,
-          emptyIcon: widget.customEmptyIcon,
-          starSize: widget.starSize,
-          animationDuration: widget.animationDuration,
-          animationCurve: widget.animationCurve,
-        ),
-      );
-    }),
-  );
+          },
+          child: AnimatedStar(
+            filled: _rating >= index + 1,
+            halfFilled: widget.interactiveTooltips && _rating == index + 0.5,
+            filledColor: widget.filledColor,
+            emptyColor: widget.emptyColor,
+            filledIcon: widget.customFilledIcon,
+            halfFilledIcon: widget.customHalfFilledIcon,
+            emptyIcon: widget.customEmptyIcon,
+            starSize: widget.starSize,
+            animationDuration: widget.animationDuration,
+            animationCurve: widget.animationCurve,
+          ),
+        );
+      }),
+    );
   }
 }
 
