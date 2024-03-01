@@ -66,7 +66,7 @@ class AnimatedRatingStars extends StatefulWidget {
     this.initialRating = 0.0,
     this.minRating = 0.0,
     this.maxRating = 5.0,
-    this.filledColor = Colors.amber,
+    this.filledColor = Colors.red,
     this.emptyColor = Colors.grey,
     this.filledIcon = Icons.star,
     this.halfFilledIcon = Icons.star_half,
