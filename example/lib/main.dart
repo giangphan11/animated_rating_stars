@@ -48,9 +48,9 @@ class _MyAppState extends State<MyApp> {
                   },
                   displayRatingValue: true, // Display the rating value
                   interactiveTooltips: true, // Allow toggling half-star state
-                  customFilledIcon: CupertinoIcons.star_fill,
-                  customHalfFilledIcon: Icons.star_half,
-                  customEmptyIcon: CupertinoIcons.star,
+                  customFilledIcon: const Icon(CupertinoIcons.star_fill),
+                  customHalfFilledIcon: const Icon(Icons.star_half),
+                  customEmptyIcon: const Icon(CupertinoIcons.star),
                   starSize: 40.0,
                   animationDuration: const Duration(milliseconds: 500),
                   animationCurve: Curves.easeInOut,

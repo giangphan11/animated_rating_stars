@@ -20,13 +20,13 @@ class AnimatedRatingStars extends StatefulWidget {
   final Color emptyColor;
 
   /// The icon used for filled stars.
-  final IconData filledIcon;
+  final Widget filledIcon;
 
   /// The icon used for half-filled stars.
-  final IconData halfFilledIcon;
+  final Widget halfFilledIcon;
 
   /// The icon used for empty stars.
-  final IconData emptyIcon;
+  final Widget emptyIcon;
 
   /// A callback function called when the rating changes.
   final Function(double) onChanged;
@@ -40,13 +40,13 @@ class AnimatedRatingStars extends StatefulWidget {
   final bool interactiveTooltips;
 
   /// The custom icon for filled stars.
-  final IconData customFilledIcon;
+  final Widget customFilledIcon;
 
   /// The custom icon for half-filled stars.
-  final IconData customHalfFilledIcon;
+  final Widget customHalfFilledIcon;
 
   /// The custom icon for empty stars.
-  final IconData customEmptyIcon;
+  final Widget customEmptyIcon;
 
   /// The size of each star.
   final double starSize;
@@ -71,9 +71,9 @@ class AnimatedRatingStars extends StatefulWidget {
     this.maxRating = 5.0,
     this.filledColor = Colors.amber,
     this.emptyColor = Colors.grey,
-    this.filledIcon = Icons.star,
-    this.halfFilledIcon = Icons.star_half,
-    this.emptyIcon = Icons.star_border,
+    this.filledIcon = const Icon(Icons.star),
+    this.halfFilledIcon = const Icon(Icons.star_half),
+    this.emptyIcon = const Icon(Icons.star_border),
     required this.onChanged,
     this.displayRatingValue = true,
     this.interactiveTooltips = false,
@@ -106,20 +106,7 @@ class _AnimatedRatingStarsState extends State<AnimatedRatingStars> {
       spacing: widget.spaceSize, // gap between adjacent chips
       runSpacing: 0.0, // gap between lines
       children: List.generate(widget.maxRating.toInt(), (index) {
-        return GestureDetector(
-          onTap: () {
-            if (!widget.readOnly) {
-              double selectedRating = index.toDouble() + 1.0;
-              if (_rating == selectedRating && widget.interactiveTooltips) {
-                _rating -= 0.5; // Toggle half-star state
-              } else {
-                _rating = selectedRating;
-              }
-              widget.onChanged(_rating);
-              setState(() {}); // Rebuild widget to reflect changes
-            }
-          },
-          child: AnimatedStar(
+        return AnimatedStar(
             filled: _rating >= index + 1,
             halfFilled: widget.interactiveTooltips && _rating == index + 0.5,
             filledColor: widget.filledColor,
@@ -130,8 +117,19 @@ class _AnimatedRatingStarsState extends State<AnimatedRatingStars> {
             starSize: widget.starSize,
             animationDuration: widget.animationDuration,
             animationCurve: widget.animationCurve,
-          ),
-        );
+            onTap: (){
+              if (!widget.readOnly) {
+              double selectedRating = index.toDouble() + 1.0;
+              if (_rating == selectedRating && widget.interactiveTooltips) {
+                _rating -= 0.5; // Toggle half-star state
+              } else {
+                _rating = selectedRating;
+              }
+              widget.onChanged(_rating);
+              setState(() {}); // Rebuild widget to reflect changes
+            }
+            },
+          );
       }),
     );
   }
@@ -152,13 +150,13 @@ class AnimatedStar extends StatefulWidget {
   final Color emptyColor;
 
   /// The icon used for filled stars.
-  final IconData filledIcon;
+  final Widget filledIcon;
 
   /// The icon used for half-filled stars.
-  final IconData halfFilledIcon;
+  final Widget halfFilledIcon;
 
   /// The icon used for empty stars.
-  final IconData emptyIcon;
+  final Widget emptyIcon;
 
   /// The size of the star.
   final double starSize;
@@ -169,6 +167,9 @@ class AnimatedStar extends StatefulWidget {
   /// The curve for the animation when the star state changes.
   final Curve animationCurve;
 
+  /// onTap callback
+  final Function() onTap;
+
   /// Creates an [AnimatedStar] widget.
   const AnimatedStar({
     super.key,
@@ -176,12 +177,13 @@ class AnimatedStar extends StatefulWidget {
     this.halfFilled = false,
     this.filledColor = Colors.amber,
     this.emptyColor = Colors.grey,
-    this.filledIcon = Icons.star,
-    this.halfFilledIcon = Icons.star_half,
-    this.emptyIcon = Icons.star_border,
+    this.filledIcon = const Icon(Icons.star),
+    this.halfFilledIcon = const Icon(Icons.star_half),
+    this.emptyIcon = const Icon(Icons.star_border),
     this.starSize = 30.0,
     this.animationDuration = const Duration(milliseconds: 300),
     this.animationCurve = Curves.easeInOut,
+    required this.onTap,
   });
 
   @override
@@ -237,18 +239,19 @@ class _AnimatedStarState extends State<AnimatedStar>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
-        return Icon(
-          widget.filled
+        return IconButton(
+          onPressed: widget.onTap,
+          icon: widget.filled
               ? widget.filledIcon
               : widget.halfFilled
                   ? widget.halfFilledIcon
                   : widget.emptyIcon,
+          iconSize: widget.starSize + 8.0 * _animation.value,
           color: Color.lerp(
             widget.emptyColor,
             widget.filledColor,
             _animation.value,
           ),
-          size: widget.starSize + 8.0 * _animation.value,
         );
       },
     );
