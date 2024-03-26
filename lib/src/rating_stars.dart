@@ -117,6 +117,7 @@ class _AnimatedRatingStarsState extends State<AnimatedRatingStars> {
             starSize: widget.starSize,
             animationDuration: widget.animationDuration,
             animationCurve: widget.animationCurve,
+            readOnly: widget.readOnly,
             onTap: (){
               if (!widget.readOnly) {
               double selectedRating = index.toDouble() + 1.0;
@@ -170,6 +171,8 @@ class AnimatedStar extends StatefulWidget {
   /// onTap callback
   final Function() onTap;
 
+  final bool readOnly;
+
   /// Creates an [AnimatedStar] widget.
   const AnimatedStar({
     super.key,
@@ -184,6 +187,7 @@ class AnimatedStar extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 300),
     this.animationCurve = Curves.easeInOut,
     required this.onTap,
+    required this.readOnly,
   });
 
   @override
@@ -240,7 +244,7 @@ class _AnimatedStarState extends State<AnimatedStar>
       animation: _animation,
       builder: (context, child) {
         return IconButton(
-          onPressed: widget.onTap,
+          onPressed: widget.readOnly ? null : widget.onTap,
           icon: widget.filled
               ? widget.filledIcon
               : widget.halfFilled

@@ -51,6 +51,7 @@ class _MyAppState extends State<MyApp> {
                   customFilledIcon: const Icon(CupertinoIcons.star_fill),
                   customHalfFilledIcon: const Icon(Icons.star_half),
                   customEmptyIcon: const Icon(CupertinoIcons.star),
+                  readOnly: true,
                   starSize: 40.0,
                   animationDuration: const Duration(milliseconds: 500),
                   animationCurve: Curves.easeInOut,
